@@ -2,43 +2,46 @@
 """ENTER YOUR SOLUTION HERE!"""
 
 class Employee:
-    def __init__(self, name, salaryType, salary, hours = None, commissionType = None, commission = 0, commissionContracts = None):
+    def __init__(self, name, commission):
         self.name = name
-        self.salaryType = salaryType.lower()
-        self.salary = salary
-        self.hours = hours
-        self.commissionType = None
-        if commissionType:
-            self.commissionType = commissionType.lower()
         self.commission = commission
-        self.commissionContracts = commissionContracts
     def get_pay(self):
-        if self.salaryType == "monthly":
-            return self.salary + self.get_commission()
-        else:
-            return self.salary * self.hours + self.get_commission()
-    def get_commission(self):
-        if not self.commissionType: 
-            return 0
-        if self.commissionType == "bonus":
-            return self.commission
-        else:
-            return self.commission * self.commissionContracts
+        if (self.commission):
+            return self.get_pay_root() + self.commission.value
+        else :
+            return self.get_pay_root() 
     def __str__(self):
-        string = f"{self.name} works on a "
-         if self.salaryType == "monthly":
-             string += f"{self.salaryType} salary of {self.salary}"
-         else:
-             string += f"{self.salaryType} of {self.hours} hours at {self.salary}/hour"
+        if (self.commission):
+            return f"{self.name} works on {self.get_description()} and receives {self.commission.description}. Their total pay is {self.get_pay()}."
+        else:
+            return f"{self.name} works on {self.get_description()}. Their total pay is {self.get_pay()}."
+class ContractCommission:
+    def __init__(self, contract_num, contract_price):
+        self.description = f"a commission for {contract_num} contract(s) at {contract_price}/contract"
+        self.value = contract_num * contract_price
 
-         if self.commissionType:
-             string += f" and receives a "
-             if self.commissionType == "bonus":
-                 string += f"{self.commissionType} commission of {self.commission}"
-             else:
-                 string += f"commission for {self.commissionContracts} contract(s) at {self.commission}/contract"
-         string += f". Their total pay is {self.get_pay()}."
-         return string
+ class BonusCommission:
+     def __init__(self, contract_price):
+         self.description = f"a bonus commission of {contract_price}"
+         self.value = contract_price
+
+ class MonthlyEmployee(Employee):
+    def __init__(self, name, salary, commission=None):
+        super().__init__(name, commission)
+        self.salary = salary
+    def get_description(self):
+        return f"a monthly salary of {self.salary}"
+    def get_pay_root(self):
+        return self.salary
+class ContractEmployee(Employee):
+    def __init__(self, name, contract_hours, contract_rate, commission=None):
+        super().__init__(name, commission)
+        self.contract_hours = contract_hours
+        self.contract_rate = contract_rate
+    def get_description(self):
+        return f"a contract of {self.contract_hours} hours at {self.contract_rate}/hour"
+    def get_pay_root(self):
+        return self.contract_hours * self.contract_rate
 
 
 # Billie works on a monthly salary of 4000.  Their total pay is 4000.
@@ -58,5 +61,3 @@ robbie = Employee('Robbie')
 
 # Ariel works on a contract of 120 hours at 30/hour and receives a bonus commission of 600.  Their total pay is 4200.
 ariel = Employee('Ariel')
-
-
