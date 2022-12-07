@@ -2,46 +2,37 @@
 """ENTER YOUR SOLUTION HERE!"""
 
 class Employee:
-    def __init__(self, name, commission):
+    def __init__(self, name, description ="", salary=0, commission=0):
         self.name = name
-        self.commission = commission
-    def get_pay(self):
-        if (self.commission):
-            return self.get_pay_root() + self.commission.value
-        else :
-            return self.get_pay_root() 
-    def __str__(self):
-        if (self.commission):
-            return f"{self.name} works on {self.get_description()} and receives {self.commission.description}. Their total pay is {self.get_pay()}."
-        else:
-            return f"{self.name} works on {self.get_description()}. Their total pay is {self.get_pay()}."
-class ContractCommission:
-    def __init__(self, contract_num, contract_price):
-        self.description = f"a commission for {contract_num} contract(s) at {contract_price}/contract"
-        self.value = contract_num * contract_price
-
- class BonusCommission:
-     def __init__(self, contract_price):
-         self.description = f"a bonus commission of {contract_price}"
-         self.value = contract_price
-
- class MonthlyEmployee(Employee):
-    def __init__(self, name, salary, commission=None):
-        super().__init__(name, commission)
+        self.description = description
         self.salary = salary
-    def get_description(self):
-        return f"a monthly salary of {self.salary}"
-    def get_pay_root(self):
-        return self.salary
-class ContractEmployee(Employee):
-    def __init__(self, name, contract_hours, contract_rate, commission=None):
-        super().__init__(name, commission)
-        self.contract_hours = contract_hours
-        self.contract_rate = contract_rate
-    def get_description(self):
-        return f"a contract of {self.contract_hours} hours at {self.contract_rate}/hour"
-    def get_pay_root(self):
-        return self.contract_hours * self.contract_rate
+        self.commission = commission
+    #salary is based on fixed monthly pay
+    def contractBasedSalary(self, monthlyIncome):
+        self.salary = monthlyIncome
+        return
+    #salary based on the how long they worked for * how much they get paid per hour
+    def hourlyBasedSalary(self, hourlyIncome, hoursWorked):
+        self.salary = hourlyIncome * hoursWorked
+        return
+    #commission based on fixed bonus received on top of salary
+    def bonusBasedCommission(self, fixedBonusValue):
+        self.commission = fixedBonusValue
+        return
+    #commission based on number of contracts landed * comission per contract
+    def contractBasedCommission(self, commissionPerContract, numOfContractsLanded):
+        self.commission= commissionPerContract * numOfContractsLanded
+        return
+    #description = information on how the payement was calaculated
+    def outputPayInfo(self, description):
+        self.description = description
+        return
+    def get_pay(self):
+        totalpayement = self.salary + self.commission
+        return totalpayement
+    #outputs informaiton on how the payement was calculated
+    def __str__(self):
+        return self.description
 
 
 # Billie works on a monthly salary of 4000.  Their total pay is 4000.
